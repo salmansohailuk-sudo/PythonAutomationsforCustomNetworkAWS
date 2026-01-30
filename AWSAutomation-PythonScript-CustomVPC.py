@@ -243,9 +243,9 @@ vpc = get_or_create_vpc()
 
 # Subnets
 public_subnet_1 = get_or_create_subnet(vpc, "10.0.1.0/24", "public-subnet-1", public=True, az="us-east-1a")
-public_subnet_2 = get_or_create_subnet(vpc, "10.0.4.0/24", "public-subnet-2", public=True, az="us-east-1b")
-private_subnet_1 = get_or_create_subnet(vpc, "10.0.2.0/24", "private-subnet-1", az="us-east-1a")
-private_subnet_2 = get_or_create_subnet(vpc, "10.0.3.0/24", "private-subnet-2", az="us-east-1b")
+public_subnet_2 = get_or_create_subnet(vpc, "10.0.2.0/24", "public-subnet-2", public=True, az="us-east-1b")
+private_subnet_1 = get_or_create_subnet(vpc, "10.0.3.0/24", "private-subnet-1", az="us-east-1a")
+private_subnet_2 = get_or_create_subnet(vpc, "10.0.4.0/24", "private-subnet-2", az="us-east-1b")
 
 igw = get_or_create_igw(vpc)
 nat_id = get_or_create_nat(public_subnet_1)
@@ -271,6 +271,7 @@ private_sg = get_or_create_sg(
     "private-sg", "Private SG", vpc,
     [{"IpProtocol":"tcp","FromPort":22,"ToPort":22,"IpRanges":[{"CidrIp":"10.0.0.0/16"}]},
      {"IpProtocol":"tcp","FromPort":80,"ToPort":80,"IpRanges":[{"CidrIp":"10.0.0.0/16"}]},
+     {"IpProtocol":"tcp","FromPort":3306,"ToPort":3306,"IpRanges":[{"CidrIp":"10.0.0.0/16"}]},
      {"IpProtocol":"icmp","FromPort":-1,"ToPort":-1,"IpRanges":[{"CidrIp":"10.0.0.0/16"}]}]
 )
 
@@ -318,3 +319,4 @@ listener_arn = create_listener(alb_arn, tg_arn)
 wait_for_targets_healthy(tg_arn)
 
 print("\n🎯 Full infrastructure deployed successfully!")
+
