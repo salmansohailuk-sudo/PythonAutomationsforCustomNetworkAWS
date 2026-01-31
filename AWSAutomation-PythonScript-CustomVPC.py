@@ -289,3 +289,4 @@ target_group_arn = create_target_group([private_instance1, private_instance2])
 
 
 print("Infrastructure setup completed successfully!")
+
